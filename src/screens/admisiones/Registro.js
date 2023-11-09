@@ -9,8 +9,8 @@ const Registro = () => {
         initialValues: {
             nombre: '',
             apellido: '',
-            carreraPrimaria: '0',
-            carreraSecundaria: '0',
+            carreraPrimaria: '',
+            carreraSecundaria: '',
             identidad: '',
             telefono: '',
             correoPersonal: '',
