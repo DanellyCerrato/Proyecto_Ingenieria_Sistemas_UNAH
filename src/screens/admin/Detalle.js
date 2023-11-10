@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 export const Detalle = () => {
 
     const params = useParams();
-    const [setDocente] = useState(0)
+    const [docente, setDocente] = useState(0)
 
     useEffect(() => {
         setDocente(params.id)
