@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { DashboardRoutes } from "./DashboardRoutes"
 import AdmisionesRouter from "./AdmisionesRouter"
+import EstudiantesRouter from "./EstudiantesRouter"
 
 export const AppRouter = () => {
 
@@ -12,10 +13,14 @@ export const AppRouter = () => {
                     <AdmisionesRouter />
                 } />
 
+                <Route path="/estudiantes/*" element={
+                    <EstudiantesRouter />
+                } />
+
+
                 <Route path="/*" element={
                     <DashboardRoutes />
                 } />
-
 
             </Routes>
         </BrowserRouter>

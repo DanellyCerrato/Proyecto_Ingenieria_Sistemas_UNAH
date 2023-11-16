@@ -20,7 +20,7 @@ const CrearUsuario = () => {
     },
     validationSchema: Yup.object({
       nombre: Yup.string()
-        .required('Requerido'),
+        .required('Requerido 2'),
       apellido: Yup.string()
         .required('Requerido'),
       centro: Yup.string()
