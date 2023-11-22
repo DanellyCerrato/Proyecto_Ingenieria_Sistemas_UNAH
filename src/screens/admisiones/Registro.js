@@ -1,10 +1,38 @@
-import React from 'react'
+
 import { NavLink } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Registro = () => {
 
+    const [carreras, setCarreras] = useState([]);   
+    const [centros, setCentros] = useState([]);
+
+  useEffect(() => {
+    const fetchCarreras = async () => {
+      try {
+        const response = await fetch('https://unah-proyecto.onrender.com/api/carrera/listar');
+        const data = await response.json();
+        setCarreras(data);
+      } catch (error) {
+        console.error('Error al obtener datos de la API de carreras', error);
+      }
+    };
+const fetchCentros = async () => {
+      try {
+        const response = await fetch('https://unah-proyecto.onrender.com/api/centro/listar');
+        const data = await response.json();
+        setCentros(data);
+      } catch (error) {
+        console.error('Error al obtener datos de la otra API', error);
+      }
+    };
+
+    fetchCarreras();
+    fetchCentros();
+  }, []);
     const { handleSubmit, errors, touched, getFieldProps } = useFormik({
         initialValues: {
             nombre: '',
@@ -17,8 +45,27 @@ const Registro = () => {
             correoRegional: '',
             foto: ''
         },
-        onSubmit: (values) => {
+        onSubmit: async(values, { setSubmitting })  => {
             console.log(values);
+            try {
+        
+                const response = await axios.post('https://unah-proyecto.onrender.com/api/admision/crear', {
+                    nombre: values.nombre,
+                    apellidos: values.apellido,
+                    identidad: values.identidad,
+                    telefono: values.telefono,
+                    correo_personal: values.correoPersonal,
+                    cod_centro: values.centro,
+                    cod_carrera1: values.carreraPrimaria,
+                    cod_carrera2: values.carreraSecundaria,
+                });
+                console.log('Respuesta de la API:', response.data);
+            } catch (error) {
+            console.error('Error al enviar los datos a la API', error);
+            }
+            finally {
+                setSubmitting(false); // Asegúrate de desactivar el estado de "submitting"
+              }
         },
         validationSchema: Yup.object({
             nombre: Yup.string()
@@ -95,11 +142,11 @@ const Registro = () => {
                                 {...getFieldProps('carreraPrimaria')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
-                                <option value="0">Seleccione una carrera</option>
-                                <option value="1">Carrerra 1</option>
-                                <option value="2">Carrerra 2</option>
-                                <option value="3">Carrerra 3</option>
-                                <option value="4">Carrerra 4</option>
+                                {carreras.map(carrera => (
+                                <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
+                                {carrera.nombre_carrera}
+                                </option>
+                                ))}
                             </select>
                             {touched.carreraPrimaria && errors.carreraPrimaria && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.carreraPrimaria}</span>}
                         </div>
@@ -115,11 +162,11 @@ const Registro = () => {
                                 {...getFieldProps('carreraSecundaria')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
-                                <option value="0">Seleccione una carrera</option>
-                                <option value="1">Carrerra 1</option>
-                                <option value="2">Carrerra 2</option>
-                                <option value="3">Carrerra 3</option>
-                                <option value="4">Carrerra 4</option>
+                                {carreras.map(carrera => (
+                                <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
+                                {carrera.nombre_carrera}
+                                </option>
+                                ))}
                             </select>
                             {touched.carreraSecundaria && errors.carreraSecundaria && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.carreraSecundaria}</span>}
                         </div>
@@ -179,15 +226,19 @@ const Registro = () => {
                             >
                                 Centro regional
                             </label>
-                            <input
-                                type="email"
-                                {...getFieldProps('correoRegional')}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder={'correo@correo.com'}
-                            />
-                            {touched.correoRegional && errors.correoRegional && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.correoRegional}</span>}
+                            <select
+                                defaultValue={"0"}
+                                {...getFieldProps('centro')}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            >
+                                {centros.map(centro => (
+                                <option key={centro.cod_centro} value={centro.cod_centro}>
+                                {centro.nombre_centro}
+                                </option>
+                                ))}
+                            </select>
+                            {touched.centro && errors.centro && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.centro}</span>}
                         </div>
-
                         <div className="sm:col-span-2">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">Foto</label>
                             <input {...getFieldProps('foto')}
@@ -195,11 +246,13 @@ const Registro = () => {
                                 type="file" />
                             {touched.foto && errors.foto && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold0'>{errors.foto}</span>}
                         </div>
-
                     </div>
                     <div className="mt-8 flex items-center gap-x-6">
-                        <button type="submit" className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                            Guardar
+                        <button
+                        type="submit"
+                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                        Guardar
                         </button>
                         <NavLink to={'/admisiones'} >
                             <button type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
