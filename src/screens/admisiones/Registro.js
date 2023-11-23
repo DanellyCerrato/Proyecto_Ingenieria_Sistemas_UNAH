@@ -33,7 +33,8 @@ const fetchCentros = async () => {
     fetchCarreras();
     fetchCentros();
   }, []);
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik({
+  
+const { handleSubmit, errors, touched, getFieldProps } = useFormik({
         initialValues: {
             nombre: '',
             apellido: '',
@@ -46,18 +47,18 @@ const fetchCentros = async () => {
             foto: ''
         },
         onSubmit: async(values, { setSubmitting })  => {
-            console.log(values);
+            //event.preventDefault();
             try {
-        
+                console.log(values)
                 const response = await axios.post('https://unah-proyecto.onrender.com/api/admision/crear', {
                     nombre: values.nombre,
                     apellidos: values.apellido,
                     identidad: values.identidad,
                     telefono: values.telefono,
                     correo_personal: values.correoPersonal,
-                    cod_centro: values.centro,
+                    cod_centro: values.correoRegional,
                     cod_carrera1: values.carreraPrimaria,
-                    cod_carrera2: values.carreraSecundaria,
+                    cod_carrera2: values.carreraSecundaria
                 });
                 console.log('Respuesta de la API:', response.data);
             } catch (error) {
@@ -65,7 +66,7 @@ const fetchCentros = async () => {
             }
             finally {
                 setSubmitting(false); // Asegúrate de desactivar el estado de "submitting"
-              }
+            }
         },
         validationSchema: Yup.object({
             nombre: Yup.string()
@@ -84,9 +85,8 @@ const fetchCentros = async () => {
                 .email('El correo no tiene un formato válido')
                 .required('Requerido'),
             correoRegional: Yup.string()
-                .email('El correo no tiene un formato válido')
                 .required('Requerido'),
-            foto: Yup.mixed().required('La foto es requerida')
+            foto: Yup.mixed()
         })
     });
 
@@ -97,7 +97,7 @@ const fetchCentros = async () => {
                 <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                     Agregar nuevo estudiante
                 </h2>
-                <form onSubmit={handleSubmit} >
+                <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                         <div className="sm:col-span-2">
                             <label
@@ -138,7 +138,7 @@ const fetchCentros = async () => {
                                 Carrera primaria
                             </label>
                             <select
-                                defaultValue={"0"}
+                                defaultValue={''}
                                 {...getFieldProps('carreraPrimaria')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
@@ -158,7 +158,7 @@ const fetchCentros = async () => {
                                 Carrera secundaria
                             </label>
                             <select
-                                defaultValue={"0"}
+                                defaultValue={''}
                                 {...getFieldProps('carreraSecundaria')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
@@ -227,8 +227,8 @@ const fetchCentros = async () => {
                                 Centro regional
                             </label>
                             <select
-                                defaultValue={"0"}
-                                {...getFieldProps('centro')}
+                                defaultValue={''}
+                                {...getFieldProps('correoRegional')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 {centros.map(centro => (
@@ -237,7 +237,7 @@ const fetchCentros = async () => {
                                 </option>
                                 ))}
                             </select>
-                            {touched.centro && errors.centro && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.centro}</span>}
+                            {touched.correoRegional && errors.correoRegional && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.correoRegional}</span>}
                         </div>
                         <div className="sm:col-span-2">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">Foto</label>
@@ -248,18 +248,17 @@ const fetchCentros = async () => {
                         </div>
                     </div>
                     <div className="mt-8 flex items-center gap-x-6">
+                        <NavLink to={'/'} >
+                            <button type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                Cancelar
+                            </button>
+                        </NavLink>
                         <button
                         type="submit"
                         className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                         Guardar
                         </button>
-                        <NavLink to={'/admisiones'} >
-                            <button type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                                Cancelar
-                            </button>
-                        </NavLink>
-
                     </div>
                 </form>
             </div >
