@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import notificacion from '../../utils/notificacion';
 
 const Resultados = () => {
   const [buscar, setBuscar] = useState(false)
@@ -11,6 +12,9 @@ const Resultados = () => {
     },
     onSubmit: (values) => {
       console.log(values);
+
+      
+      //notificacion('success', '')
 
       setBuscar(true);
 

@@ -4,37 +4,40 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import notificacion from '../../utils/notificacion';
 
 const Registro = () => {
 
-    const [carreras, setCarreras] = useState([]);   
+    const [carreras, setCarreras] = useState([]);
     const [centros, setCentros] = useState([]);
 
-  useEffect(() => {
-    const fetchCarreras = async () => {
-      try {
-        const response = await fetch('https://unah-proyecto.onrender.com/api/carrera/listar');
-        const data = await response.json();
-        setCarreras(data);
-      } catch (error) {
-        console.error('Error al obtener datos de la API de carreras', error);
-      }
-    };
-const fetchCentros = async () => {
-      try {
-        const response = await fetch('https://unah-proyecto.onrender.com/api/centro/listar');
-        const data = await response.json();
-        setCentros(data);
-      } catch (error) {
-        console.error('Error al obtener datos de la otra API', error);
-      }
-    };
+    
 
-    fetchCarreras();
-    fetchCentros();
-  }, []);
-  
-const { handleSubmit, errors, touched, getFieldProps } = useFormik({
+    useEffect(() => {
+        const fetchCarreras = async () => {
+            try {
+                const response = await fetch('https://unah-proyecto.onrender.com/api/carrera/listar');
+                const data = await response.json();
+                setCarreras(data);
+            } catch (error) {
+                console.error('Error al obtener datos de la API de carreras', error);
+            }
+        };
+        const fetchCentros = async () => {
+            try {
+                const response = await fetch('https://unah-proyecto.onrender.com/api/centro/listar');
+                const data = await response.json();
+                setCentros(data);
+            } catch (error) {
+                console.error('Error al obtener datos de la otra API', error);
+            }
+        };
+
+        fetchCarreras();
+        fetchCentros();
+    }, []);
+
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik({
         initialValues: {
             nombre: '',
             apellido: '',
@@ -46,7 +49,7 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
             correoRegional: '',
             foto: ''
         },
-        onSubmit: async(values, { setSubmitting })  => {
+        onSubmit: async (values, { setSubmitting }) => {
             //event.preventDefault();
             try {
                 console.log(values)
@@ -60,9 +63,11 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
                     cod_carrera1: values.carreraPrimaria,
                     cod_carrera2: values.carreraSecundaria
                 });
+                notificacion('success', 'Registro Guardado con exito')
                 console.log('Respuesta de la API:', response.data);
             } catch (error) {
-            console.error('Error al enviar los datos a la API', error);
+                notificacion('error', 'No se pudo agregar la informacion')
+                console.error('Error al enviar los datos a la API', error);
             }
             finally {
                 setSubmitting(false); // Asegúrate de desactivar el estado de "submitting"
@@ -143,9 +148,9 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 {carreras.map(carrera => (
-                                <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
-                                {carrera.nombre_carrera}
-                                </option>
+                                    <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
+                                        {carrera.nombre_carrera}
+                                    </option>
                                 ))}
                             </select>
                             {touched.carreraPrimaria && errors.carreraPrimaria && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.carreraPrimaria}</span>}
@@ -163,9 +168,9 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 {carreras.map(carrera => (
-                                <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
-                                {carrera.nombre_carrera}
-                                </option>
+                                    <option key={carrera.cod_carrera} value={carrera.cod_carrera}>
+                                        {carrera.nombre_carrera}
+                                    </option>
                                 ))}
                             </select>
                             {touched.carreraSecundaria && errors.carreraSecundaria && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.carreraSecundaria}</span>}
@@ -232,9 +237,9 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 {centros.map(centro => (
-                                <option key={centro.cod_centro} value={centro.cod_centro}>
-                                {centro.nombre_centro}
-                                </option>
+                                    <option key={centro.cod_centro} value={centro.cod_centro}>
+                                        {centro.nombre_centro}
+                                    </option>
                                 ))}
                             </select>
                             {touched.correoRegional && errors.correoRegional && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.correoRegional}</span>}
@@ -254,10 +259,10 @@ const { handleSubmit, errors, touched, getFieldProps } = useFormik({
                             </button>
                         </NavLink>
                         <button
-                        type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            type="submit"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                        Guardar
+                            Guardar
                         </button>
                     </div>
                 </form>
