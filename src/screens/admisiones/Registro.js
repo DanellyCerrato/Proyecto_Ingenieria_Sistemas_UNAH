@@ -1,8 +1,10 @@
+
 import { NavLink } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import notificacion from '../../utils/notificacion';
 
 const Registro = () => {
 
