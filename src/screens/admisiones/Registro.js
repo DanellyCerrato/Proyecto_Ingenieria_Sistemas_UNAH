@@ -62,6 +62,16 @@ const Registro = () => {
                     cod_carrera1: values.carreraPrimaria,
                     cod_carrera2: values.carreraSecundaria,
                 });
+
+                values.nombre = '';
+                values.apellido = '';
+                values.identidad = '';
+                values.telefono = '';
+                values.correoPersonal = '';
+                values.correoRegional = '';
+                values.carreraPrimaria = '';
+                values.carreraSecundaria = '';
+
                 console.log('Respuesta de la API:', response.data);
             } catch (error) {
                 console.error('Error al enviar los datos a la API', error);
@@ -69,7 +79,7 @@ const Registro = () => {
             finally {
                 setSubmitting(false); // Asegúrate de desactivar el estado de "submitting"
             }
-            
+
         },
         validationSchema: Yup.object({
             nombre: Yup.string()
