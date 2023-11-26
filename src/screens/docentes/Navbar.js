@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const Navbar = () => {
+const NavbarD = () => {
     return (
         <div>
             <nav
@@ -10,7 +10,7 @@ const Navbar = () => {
             >
                 <div className="flex lg:flex-1">
                     <p className="-m-1.5 p-1.5 text-lg font-semibold leading-6 text-sky-50">
-                        Modulo de Admisiones
+                        Docentes
                     </p>
                 </div>
                 <div className="flex lg:hidden">
@@ -36,21 +36,21 @@ const Navbar = () => {
                     </button>
                 </div>
                 <div className="hidden lg:flex lg:gap-x-12">
-                    <NavLink to="/admisiones" className={({ isActive }) =>
+                    <NavLink to="/docentes/clases-docente" className={({ isActive }) =>
                         isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"} >
-                        Registro
+                        Clases
                     </NavLink>
-                    <NavLink to="/admisiones/calificaciones" className={({ isActive }) =>
+                    <NavLink to="/docentes/presentacion-docente" className={({ isActive }) =>
                         isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"}>
-                        Calificaciones
+                        Presentacion
                     </NavLink>
-                    <NavLink to="/admisiones/resultados" className={({ isActive }) =>
+                    <NavLink to="/docentes/perfil-docente" className={({ isActive }) =>
                         isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"}>
-                        Resultados
+                        Perfil
                     </NavLink>
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
-                    <NavLink to="/login?tipo=coordinacion" className="text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950">
+                    <NavLink to="/login?tipo=docentes" className="text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950">
                         Cerrar Sesion <span aria-hidden="true">→</span>
                     </NavLink>
                 </div>
@@ -90,28 +90,22 @@ const Navbar = () => {
                     <div className="mt-6 flow-root">
                         <div className="-my-6 divide-y divide-gray-500/10">
                             <div className="space-y-2 py-6">
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Registro
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Calificaciones
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Resultados
-                                </a>
+                                <NavLink to="/docentes/clases-docente" className={({ isActive }) =>
+                                    isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"} >
+                                    Clases
+                                </NavLink>
+                                <NavLink to="/docentes/presentacion-docente" className={({ isActive }) =>
+                                    isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"}>
+                                    Presentacion
+                                </NavLink>
+                                <NavLink to="/docentes/perfil-docente" className={({ isActive }) =>
+                                    isActive ? "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950" : "text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950"}>
+                                    Perfil
+                                </NavLink>
                             </div>
                             <div className="py-6">
                                 <NavLink
-                                    to="/login?tipo=coordinacion"
+                                    to="/login?tipo=docente"
                                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                                 >
                                     Cerrar Sesion
@@ -125,4 +119,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default NavbarD

@@ -8,6 +8,11 @@ Para acceder al modulo administrador, revisar el siguiente enlace [Administrador
 
 Para acceder al modulo admisiones, revisar el siguiente enlace [Admisiones](http://localhost:3000/admisiones).
 
+http://localhost:3000/login?tipo=coordinacion
+http://localhost:3000/login?tipo=estudiantes
+http://localhost:3000/login?tipo=docentes
+http://localhost:3000/login?tipo=admin
+
 ## Available Scripts
 
 In the project directory, you can run:

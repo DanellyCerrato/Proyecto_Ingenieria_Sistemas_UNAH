@@ -58,9 +58,9 @@ const NavbarE = () => {
                     </NavLink>
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end ">
-                    <a href="#" className="text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950">
-                        Log in <span aria-hidden="true">→</span>
-                    </a>
+                    <NavLink to="/login?tipo=estudiantes" className="text-lg font-semibold leading-6 text-sky-50 hover:text-sky-950">
+                        Cerrar Sesion <span aria-hidden="true">→</span>
+                    </NavLink>
                 </div>
             </nav>
             {/* Mobile menu, show/hide based on menu open state. */}
