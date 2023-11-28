@@ -5,25 +5,24 @@ import notificacion from '../../utils/notificacion';
 
 const Resultados = () => {
   const [buscar, setBuscar] = useState(false)
+  const [id, setId] = useState(false)
 
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
       search: ''
     },
-    onSubmit: (values) => {
-      console.log(values);
-
-      
-      //notificacion('success', '')
-
-      setBuscar(true);
-
+    onSubmit: async (values) => {
+      const response = await fetch('http://127.0.0.1:8000/api/admision/resultados/'+values.search);
+      const data = await response.json();
+      console.log(data)
+      setBuscar(data);
+      setId(values.search)
     },
     validationSchema: Yup.object({
       search: Yup.string()
         .required('Requerido')
         .max(13, 'Formato de identidad no valido')
-        .min(13, 'Formato de identidad no valido')
+        .min(12, 'Formato de identidad no valido')
     })
   });
 
@@ -92,17 +91,10 @@ const Resultados = () => {
                         identidad
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Nombre
+                        Carrera
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Apellido
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Carrera primaria
-                      </th>
-
-                      <th scope="col" className="px-6 py-3">
-                        Clases
+                        Resultado
                       </th>
                     </tr>
                   </thead>
@@ -112,12 +104,20 @@ const Resultados = () => {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        0801199645321
+                        {id}
                       </th>
-                      <td className="px-6 py-4">Juan Manuel</td>
-                      <td className="px-6 py-4">Rodriguez</td>
-                      <td className="px-6 py-4">Infomatica adm.</td>
-                      <td className="px-6 py-4">Aprobo</td>
+                      <td className="px-6 py-4">{buscar.carrera1}</td>
+                      <td className="px-6 py-4">{buscar.nota1 == true ? 'Aprobado' : 'Reprobado'}</td>
+                    </tr>
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {id}
+                      </th>
+                      <td className="px-6 py-4">{buscar.carrera2}</td>
+                      <td className="px-6 py-4">{buscar.nota2 == true ? 'Aprobado' : 'Reprobado'}</td>
                     </tr>
                   </tbody>
                 </table>

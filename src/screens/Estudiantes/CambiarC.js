@@ -2,24 +2,34 @@ import { useFormik } from 'formik';
 import React from 'react'
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
-const Cambio = () => {
+const Cambio = ({isNumeroCuenta}) => {
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik({
         initialValues: {
-            contrasena: '',
-            contrasenaNueva: ''
+            password: '',
+            new_password: ''
         },
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values) => {
+            const response = await axios.post('http://127.0.0.1:8000/api/estudiante/password/cambiar/', {
+                num_cuenta: isNumeroCuenta,
+                password: values.password,
+                new_password: values.new_password
+            });
 
-            success()
+            if (response.status == 200){
+                success()
+            }
+            else {
+                alert('No se pudo cambiar la contraseña')
+            }
         },
         validationSchema: Yup.object({
-            contrasena: Yup.string()
+            password: Yup.string()
                 .required('Requerido'),
-            contrasenaNueva: Yup.string()
+            new_password: Yup.string()
                 .required('Requerido'),
         }),
 
@@ -36,7 +46,6 @@ const Cambio = () => {
         });
     }
 
-
     return (
         <div className='max-w-md' >
             <label
@@ -47,32 +56,32 @@ const Cambio = () => {
             <form onSubmit={handleSubmit} >
                 <div className="mb-6">
                     <label
-                        htmlFor="email"
+                        htmlFor="password"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                         Contraseña anterior
                     </label>
                     <input
-                        {...getFieldProps('correo')}
+                        {...getFieldProps('password')}
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         type='password'
                     />
-                    {touched.contrasena && errors.contrasena && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.contrasena}</span>}
+                    {touched.password && errors.password && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.password}</span>}
 
                 </div>
                 <div className="mb-6">
                     <label
-                        htmlFor="password"
+                        htmlFor="new_password"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                         Contraseña nueva
                     </label>
                     <input
-                        {...getFieldProps('contrasenaNueva')}
+                        {...getFieldProps('new_password')}
                         type='password'
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     />
-                    {touched.contrasenaNueva && errors.contrasenaNueva && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.contrasenaNueva}</span>}
+                    {touched.new_password && errors.new_password && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold'>{errors.new_password}</span>}
 
                 </div>
                 <button

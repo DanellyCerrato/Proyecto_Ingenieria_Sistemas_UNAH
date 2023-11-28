@@ -26,22 +26,37 @@ const Calificaciones = () => {
             timer: 1500
         });
     }
+    const correos = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Correos Enviados con éxito",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
 
-    const handleFileSelected = async () => {
+    const handleFileSelected = () => {
         if (file) {
           Papa.parse(file, {
             header: true,
             dynamicTyping: true,
             skipEmptyLines: true,
-            step: function (result) {
-              // `result` contiene la información de cada línea del CSV
-              // Puedes hacer lo que quieras con cada línea aquí
-              console.log(result.data);
+            step: async function (result) {
+                if ((String(result.data.identidad).length == 12)){
+                    result.data.identidad = '0'+String(result.data.identidad)
+                }
+                const response = await axios.post('http://127.0.0.1:8000/api/calificacion/crear', {
+                    identidad: result.data.identidad,
+                    tipo_examen: result.data.tipo_examen,
+                    nota: result.data.nota,
+                });
+                
+                const response2 = await fetch('http://127.0.0.1:8000/api/calificacion/enviar');
             },
             complete: function (result) {
-              // Esta función se llama cuando se completa el análisis completo del CSV
-              // Aquí puedes realizar acciones adicionales si es necesario
-              console.log('Análisis completo', result.data);
+                agregarNotas()
+                correos()
             },
           });
         } else {

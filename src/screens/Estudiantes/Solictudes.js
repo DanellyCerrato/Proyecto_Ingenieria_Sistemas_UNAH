@@ -3,7 +3,7 @@ import React from 'react'
 import Swal from 'sweetalert2';
 import * as Yup from 'yup';
 
-const Solictudes = () => {
+const Solictudes = ({isNumeroCuenta}) => {
 
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {

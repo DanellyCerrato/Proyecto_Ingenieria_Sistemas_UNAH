@@ -6,7 +6,7 @@ const ClasesDocente = () => {
     const handleDownload = (clase) => {
 
         // REALIZAR LA PETICION AL SERVIDOR por la clase
-
+        
         const data = [
             { NumeroCuenta: '201548781', Nombre: 'Juan', Apellido: 25, Edad: 25, Ciudad: 'Buenos Aires' },
             { NumeroCuenta: '201548782', Nombre: 'María', Apellido: 25, Edad: 30, Ciudad: 'Córdoba' },

@@ -2,6 +2,8 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 const NavbarE = () => {
+    console.log('/estudiantes Navbar')
+    
     return (
         <div>
             <nav

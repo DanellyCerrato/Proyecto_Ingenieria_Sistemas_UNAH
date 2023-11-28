@@ -2,67 +2,39 @@ import { useFormik } from 'formik/dist';
 import React, { useEffect, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import axios from 'axios';
 
+const LoginEstudiante = ( {setEstudianteAuthenticated, setNumeroCuenta} ) => {
 
-const LoginScreen = () => {
-
-  const location = useLocation();
-  const navigate = useNavigate() 
-  const [tipo, setTipo] = useState("")
-  const [path, setPath] = useState("")
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
-      correo: '',
-      contrasena: ''
+      num_cuenta: '',
+      password: ''
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/estudiante/login', {
+          num_cuenta: values.num_cuenta,
+          password: values.password,
+        });
 
-      console.log(tipo)
-      console.log(path)
-
-
-      navigate(path);
-
+        if (response.status == 200){
+          setEstudianteAuthenticated(true);
+          setNumeroCuenta(values.num_cuenta);
+          setLoginSuccess(true);
+        }
+      } catch (error){
+        alert('Usuario o contraseña incorrectos')
+          values.num_cuenta= ''
+          values.password= ''
+      }
     },
-    /*validationSchema: Yup.object({
-      correo: Yup.string()
-        .required('Requerido'),
-      contrasena: Yup.string()
-        .required('Requerido'),
-    })*/
   });
-
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search)
-    setTipo(queryParams.get('tipo'))
-
-    if (queryParams.get('tipo') == null) {
-      queryParams.set('tipo', 'admin')
-      setTipo('admin')
-    } else {
-      setTipo(queryParams.get('tipo'))
-    }
-
-    switch (queryParams.get('tipo')) {
-      case 'estudiantes':
-        setPath("/estudiantes/matricula")
-        break;
-      case 'coordinacion':
-        setPath("/admisiones")
-        break;
-      case 'docentes':
-        setPath("/docentes")
-        break;
-      default:
-        setPath("/")
-    }
-
-  }, [])
-
-
+  if (loginSuccess) {
+    return <Navigate to="/estudiantes" />;
+  }
   return (
     <section className="h-screen">
       <div className="h-full">
@@ -91,14 +63,16 @@ const LoginScreen = () => {
               {/* Email input */}
               <div className="relative mb-6" data-te-input-wrapper-init="">
                 <input
+                  {...getFieldProps('num_cuenta')}
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder={tipo === 'estudiantes' ? 'Numero de cuenta' : 'Correo electronico'}
+                  placeholder={'estudiantes' ? 'Numero de cuenta' : 'Correo electronico'}
                 />
               </div>
               {/* Password input */}
               <div className="relative mb-6">
                 <input
+                  {...getFieldProps('password')}
                   type="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Contraseña"
@@ -142,4 +116,4 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default LoginEstudiante

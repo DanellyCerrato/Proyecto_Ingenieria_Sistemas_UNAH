@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import notificacion from '../../utils/notificacion';
 
 const Registro = () => {
@@ -12,10 +13,18 @@ const Registro = () => {
     const [centros, setCentros] = useState([]);
     const [submitting, setSubmitting] = useState(false)
 
-
+    const success = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Admision Ingresada con Exito",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
     const fetchCarreras = async () => {
         try {
-            const response = await fetch('https://unah-proyecto.onrender.com/api/carrera/listar');
+            const response = await fetch('http://127.0.0.1:8000/api/carrera/listar');
             const data = await response.json();
             setCarreras(data);
         } catch (error) {
@@ -24,7 +33,7 @@ const Registro = () => {
     };
     const fetchCentros = async () => {
         try {
-            const response = await fetch('https://unah-proyecto.onrender.com/api/centro/listar');
+            const response = await fetch('http://127.0.0.1:8000/api/centro/listar');
             const data = await response.json();
             setCentros(data);
         } catch (error) {
@@ -52,7 +61,7 @@ const Registro = () => {
         onSubmit: async (values) => {
             try {
 
-                const response = await axios.post('https://unah-proyecto.onrender.com/api/admision/crear', {
+                const response = await axios.post('http://127.0.0.1:8000/api/admision/crear', {
                     nombre: values.nombre,
                     apellidos: values.apellido,
                     identidad: values.identidad,
@@ -62,7 +71,7 @@ const Registro = () => {
                     cod_carrera1: values.carreraPrimaria,
                     cod_carrera2: values.carreraSecundaria,
                 });
-
+                success()
                 values.nombre = '';
                 values.apellido = '';
                 values.identidad = '';
@@ -71,10 +80,8 @@ const Registro = () => {
                 values.correoRegional = '';
                 values.carreraPrimaria = '';
                 values.carreraSecundaria = '';
-
-                console.log('Respuesta de la API:', response.data);
             } catch (error) {
-                console.error('Error al enviar los datos a la API', error);
+                alert('Error al ingresar la admisión, intentelo de nuevo');
             }
             finally {
                 setSubmitting(false); // Asegúrate de desactivar el estado de "submitting"
@@ -97,9 +104,9 @@ const Registro = () => {
             correoPersonal: Yup.string()
                 .email('El correo no tiene un formato válido')
                 .required('Requerido'),
-            centro: Yup.string()// ES el centro regional
+            correoRegional: Yup.string()// ES el centro regional
                 .required('Requerido'),
-            foto: Yup.mixed().required('La foto es requerida')
+            foto: Yup.mixed()
         })
     });
 
@@ -191,8 +198,10 @@ const Registro = () => {
                                 Numero de identidad
                             </label>
                             <input
-                                type="number"
+                                type="text"
                                 name="item-weight"
+                                maxLength={13}
+                                minLength={13}
                                 {...getFieldProps('identidad')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 placeholder="08011574859"
@@ -241,7 +250,7 @@ const Registro = () => {
                             </label>
                             <select
                                 defaultValue={"0"}
-                                {...getFieldProps('centro')}
+                                {...getFieldProps('correoRegional')}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 {centros.map(centro => (
@@ -250,7 +259,7 @@ const Registro = () => {
                                     </option>
                                 ))}
                             </select>
-                            {touched.centro && errors.centro && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.centro}</span>}
+                            {touched.correoRegional && errors.correoRegional && <span className='mb-4 mt-6 text-sm text-red-500 font-semibold' >{errors.correoRegional}</span>}
                         </div>
                         <div className="sm:col-span-2">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="user_avatar">Foto</label>

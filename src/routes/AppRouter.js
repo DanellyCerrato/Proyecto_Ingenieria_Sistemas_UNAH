@@ -1,18 +1,22 @@
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { DashboardRoutes } from "./DashboardRoutes"
 import AdmisionesRouter from "./AdmisionesRouter"
 import EstudiantesRouter from "./EstudiantesRouter"
 import DocenteRouter from "./DocenteRouter"
-import LoginScreen from "../screens/LoginScreen"
+import LoginEstudiante from "../screens/Estudiantes/LoginEstudiante"
 
 export const AppRouter = () => {
+    
+    const [isEstudianteAuthenticated, setEstudianteAuthenticated] = useState(false);
+    const [isNumeroCuenta, setNumeroCuenta] = useState('')
 
     return (
         <BrowserRouter>
             <Routes>
 
-                <Route path="/login/*" element={
-                    <LoginScreen />
+                <Route path="/estudiantes/login" element={
+                    <LoginEstudiante setEstudianteAuthenticated={setEstudianteAuthenticated} setNumeroCuenta={setNumeroCuenta}/>
                 } />
 
                 <Route path="/admisiones/*" element={
@@ -20,7 +24,7 @@ export const AppRouter = () => {
                 } />
 
                 <Route path="/estudiantes/*" element={
-                    <EstudiantesRouter />
+                    <EstudiantesRouter isEstudianteAuthenticated={isEstudianteAuthenticated} isNumeroCuenta={isNumeroCuenta}/>
                 } />
 
                 <Route path="/docentes/*" element={

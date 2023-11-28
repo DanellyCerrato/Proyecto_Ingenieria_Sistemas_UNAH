@@ -1,8 +1,30 @@
+import React, { useEffect, useState } from 'react'
 import { Grid } from '@mui/material'
-import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const Perfil = () => {
+const Perfil = ({isNumeroCuenta}) => {
+  //const [datos, setDatos] = useState();
+  const [nombre, setNombre] = useState('')
+  const [identidad, setIdentidad] = useState('')
+  const [cuenta, setCuenta] = useState('')
+  const [carrera, setCarrera] = useState('')
+  const [centro, setCentro] = useState('')
+  const [correo, setCorreo] = useState('')
+
+
+  const fetchDatos = async () => {
+    const response = await fetch('http://127.0.0.1:8000/api/estudiante/perfil/'+isNumeroCuenta);
+    const data = await response.json();
+    setNombre(data.nombre)
+    setCarrera(data.carrera.nombre_carrera)
+    setIdentidad(data.identidad)
+    setCuenta(data.num_cuenta)
+    setCentro(data.centro.nombre_centro)
+    setCorreo(data.correo_institucional)
+  };
+  useEffect(() => {
+    fetchDatos();
+  }, []);
   return (
     <div>
 
@@ -17,13 +39,10 @@ const Perfil = () => {
               alt="Bonnie image"
             />
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-              Bonnie Green
+              {nombre}
             </h5>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Carrera
-            </span>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              895
+              {carrera}
             </span>
             <div className="flex mt-4 md:mt-6">
               <NavLink
@@ -46,8 +65,6 @@ const Perfil = () => {
             </div>
           </div>
         </Grid>
-
-
         <Grid item xs={6} md={6} lg={6}>
           <label
             htmlFor="first-name"
@@ -66,7 +83,7 @@ const Perfil = () => {
                   >
                     Nombre
                   </th>
-                  <td className="px-6 py-4">Juan Miguel</td>
+                  <td className="px-6 py-4">{nombre}</td>
                 </tr>
                 <tr className="bg-white dark:bg-gray-800">
                   <th
@@ -75,7 +92,7 @@ const Perfil = () => {
                   >
                     Identidad
                   </th>
-                  <td className="px-6 py-4">0801118895478</td>
+                  <td className="px-6 py-4">{identidad}</td>
                 </tr>
                 <tr className="bg-white dark:bg-gray-800">
                   <th
@@ -84,7 +101,7 @@ const Perfil = () => {
                   >
                     Carrera
                   </th>
-                  <td className="px-6 py-4">Psicologia</td>
+                  <td className="px-6 py-4">{carrera}</td>
                 </tr>
                 <tr className="bg-white dark:bg-gray-800">
                   <th
@@ -93,7 +110,7 @@ const Perfil = () => {
                   >
                     Centro
                   </th>
-                  <td className="px-6 py-4">UNAH</td>
+                  <td className="px-6 py-4">{centro}</td>
                 </tr>
 
                 <tr className="bg-white dark:bg-gray-800">
@@ -101,9 +118,9 @@ const Perfil = () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Direccion
+                    Número de Cuenta
                   </th>
-                  <td className="px-6 py-4">Colonia las colinas</td>
+                  <td className="px-6 py-4">{cuenta}</td>
                 </tr>
                 <tr className="bg-white dark:bg-gray-800">
                   <th
@@ -112,7 +129,7 @@ const Perfil = () => {
                   >
                     Correo
                   </th>
-                  <td className="px-6 py-4">correo@correo.com</td>
+                  <td className="px-6 py-4">{correo}</td>
 
                 </tr>
 
