@@ -5,9 +5,11 @@ import AdmisionesRouter from "./AdmisionesRouter"
 import EstudiantesRouter from "./EstudiantesRouter"
 import DocenteRouter from "./DocenteRouter"
 import LoginEstudiante from "../screens/Estudiantes/LoginEstudiante"
+import DepertamentoRouter from './DepertamentoRouter'
+import CoordinacionRouter from './CoordinacionRouter'
 
 export const AppRouter = () => {
-    
+
     const [isEstudianteAuthenticated, setEstudianteAuthenticated] = useState(false);
     const [isNumeroCuenta, setNumeroCuenta] = useState('')
 
@@ -16,7 +18,7 @@ export const AppRouter = () => {
             <Routes>
 
                 <Route path="/estudiantes/login" element={
-                    <LoginEstudiante setEstudianteAuthenticated={setEstudianteAuthenticated} setNumeroCuenta={setNumeroCuenta}/>
+                    <LoginEstudiante setEstudianteAuthenticated={setEstudianteAuthenticated} setNumeroCuenta={setNumeroCuenta} />
                 } />
 
                 <Route path="/admisiones/*" element={
@@ -24,12 +26,20 @@ export const AppRouter = () => {
                 } />
 
                 <Route path="/estudiantes/*" element={
-                    <EstudiantesRouter isEstudianteAuthenticated={isEstudianteAuthenticated} isNumeroCuenta={isNumeroCuenta}/>
+                    <EstudiantesRouter isEstudianteAuthenticated={isEstudianteAuthenticated} isNumeroCuenta={isNumeroCuenta} />
                 } />
 
                 <Route path="/docentes/*" element={
                     <DocenteRouter />
                 } />
+
+                <Route path="/departamento/*"
+                    element={<DepertamentoRouter />}
+                />
+
+                <Route path="/coordinacion/*"
+                    element={<CoordinacionRouter />}
+                />
 
                 <Route path="/*" element={
                     <DashboardRoutes />

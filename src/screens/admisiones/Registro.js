@@ -98,7 +98,8 @@ const Registro = () => {
             carreraSecundaria: Yup.string()
                 .required('Requerido'),
             identidad: Yup.string()
-                .required('Requerido'),
+                .required('Requerido')
+                .matches('^\\d{13}$', 'Formato invalido'),
             telefono: Yup.string()
                 .required('Requerido'),
             correoPersonal: Yup.string()
@@ -272,12 +273,12 @@ const Registro = () => {
                     <div className="mt-8 flex items-center gap-x-6">
                         <button
                             type="submit"
-                            className="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             Guardar
                         </button>
                         <NavLink to={'/admisiones'} >
-                            <button type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                            <button type="button" className="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                 Cancelar 
                             </button>
                         </NavLink>
