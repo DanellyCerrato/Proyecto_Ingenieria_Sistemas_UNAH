@@ -15,6 +15,10 @@ const OpcioneMenuAdm = [
     {
         label: "Usuarios",
         path: "usuarios"
+    },
+    {
+        label: "Matricula",
+        path: "/matricula"
     }
 ]
 

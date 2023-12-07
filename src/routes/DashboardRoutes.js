@@ -9,6 +9,9 @@ import { Clases } from "../screens/admin/Clases"
 import Aside from "../components/Aside"
 import { Asignar } from "../screens/admin/Asignar"
 import { Detalle } from "../screens/admin/Detalle"
+import Matricula from "../screens/admin/Matricula"
+import EditarCalentario from "../screens/admin/NuevoCalentario"
+import NuevoCalentario from "../screens/admin/NuevoCalentario"
 
 export const DashboardRoutes = () => {
 
@@ -50,6 +53,9 @@ export const DashboardRoutes = () => {
                             <Route path="/panificacion-academica" element={<Planificacion />} />
                             <Route path="/cancelaciones-exepcionales" element={<Cancelaciones />} />
                             <Route path="/usuarios" element={<Usuarios />} />
+                            <Route path="/matricula" element={<Matricula />} />
+                            <Route path="/modificar-calendario/:dia" element={<EditarCalentario/>} />
+                            <Route path="/nuevo-calendario/" element={<NuevoCalentario/>} />
                             <Route path="/crear-usuario" element={<CrearUsuario />} />
                             <Route path="/usuario/clases/:id" element={<Clases />} />
                             <Route path="/docente/clases/:id" element={<Asignar />} />

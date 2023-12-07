@@ -37,7 +37,7 @@ const HistorialEstudiante = () => {
 
     },
     validationSchema: Yup.object({
-      buscar: Yup.string().matches('^\\d{13}$', 'Formato invalido'),
+      buscar: Yup.string().matches('^\\d{13}$', 'Formato invalido')
     })
   });
 
